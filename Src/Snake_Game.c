@@ -6,11 +6,15 @@
  */
 
 #include "Snake_game.h"
+#define FilledWithColor 1
+#define Empty 0
 
 dir_t dir = RIGHT; // Initialize movement to the right
 SnakeHead_t head;
 SnakeTail_t tail;
 Food_t food;
+
+u8 GridFlags[(HEIGHT + 1)][(WIDTH + 1)] = {Empty};
 
 // Initialize snake position, tail length, and initial food position
 void initializeSnake(int headX, int headY, int tailLength)
@@ -130,10 +134,12 @@ void draw()
             if (i == head.y && j == head.x)
             {
                 PoisionInTFT(head.x, head.y, TFT_BLUE); // Draw snake head
+                GridFlags[i][j] = FilledWithColor;
             }
             else if (i == food.y && j == food.x)
             {
                 PoisionInTFT(food.x, food.y, TFT_GRAY);
+                GridFlags[i][j] = FilledWithColor;
             }
             else
             {
@@ -144,11 +150,15 @@ void draw()
                     {
                         PoisionInTFT(tail.x[k], tail.y[k], TFT_GREEN);
                         isTail = 1;
+                        GridFlags[i][j] = FilledWithColor;
                         break;
                     }
                 }
-                if (!isTail)
+                if ((!isTail) && (GridFlags[i][j] == FilledWithColor))
+                {
                     PoisionInTFT(j, i, TFT_WHITE);
+                    GridFlags[i][j] = Empty;
+                }
             }
         }
     }

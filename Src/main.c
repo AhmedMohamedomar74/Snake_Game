@@ -12,8 +12,8 @@ int main()
 	// TFT_voidDrawRect(0, 32, 128, 160, TFT_BLACK);
 	while (1)
 	{
+		TFT_voidDrawString(10,10,"Hi Iam Ahmed",TFT_BLACK);
 		draw();
 		moveSnake(UP);
-		// STK_delay(MS_UNIT, 50);
 	}
 }
