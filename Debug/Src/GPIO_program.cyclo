@@ -1,0 +1,8 @@
+../Src/GPIO_program.c:10:6:GPIO_voidSetPinDirection	11
+../Src/GPIO_program.c:61:6:GPIO_voidSetPinValue	11
+../Src/GPIO_program.c:110:4:GPIO_u8GetPinValue	5
+../Src/GPIO_program.c:132:6:GPIO_voidTogPinValue	5
+../Src/GPIO_program.c:152:6:GPIO_voidSetFullPortDirection	2
+../Src/GPIO_program.c:161:6:GPIO_voidSetHalfPortDirection	5
+../Src/GPIO_program.c:179:6:GPIO_voidSetFullPortValue	5
+../Src/GPIO_program.c:199:6:GPIO_voidSetHalfPortValue	7

@@ -9,7 +9,9 @@
 #define FilledWithColor 1
 #define Empty 0
 
-dir_t dir = RIGHT; // Initialize movement to the right
+u8 Score = 0;
+
+dir_t dir = STOP; // Initialize movement to the right
 SnakeHead_t head;
 SnakeTail_t tail;
 Food_t food;
@@ -121,6 +123,7 @@ void moveSnake(dir_t direction)
     {
         tail.length++;
         moveFood(); // Move food to new position
+        Score+= 10;
     }
 }
 
@@ -171,4 +174,33 @@ void PoisionInTFT(u8 xpos, u8 ypos, u16 color)
     u8 y2 = ypos * Slected_Size;
     u8 y1 = y2 - Slected_Size;
     TFT_voidDrawRect(x1, x2, y1, y2, color);
+}
+
+
+void MoveSnakeUp()
+{
+	dir = UP;
+}
+
+void MoveSnakeDown()
+{
+	dir = DOWN;
+}
+
+void MoveSnakeLeft()
+{
+	dir = LEFT;
+}
+
+void MoveSnakeRight()
+{
+	dir = RIGHT;
+}
+
+void ControlEXT(u8 NVIC_NUMBER,void *callBackFun())
+{
+	GPIO_voidSetPinDirection(GPIOA,(NVIC_NUMBER - 6),OUTPUT_SPEED_10MHZ_PP);
+	NVIC_EnableInterrupt(NVIC_NUMBER); //EXTI0
+	NVIC_SetPriority(NVIC_NUMBER,(NVIC_NUMBER - 6),0);
+	EXTI_voidConfigure((NVIC_NUMBER - 6),PORTA,EXTI_RISING_EDGE,callBackFun);
 }

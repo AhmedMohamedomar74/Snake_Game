@@ -10,10 +10,11 @@
 
 #include "TFT_interface.h"
 #include "Snake_Game_Config.h"
+#include "EXTI_interface.h"
 
 // Define constants
 #define WIDTH Grid_Width
-#define HEIGHT Grid_Hight
+#define HEIGHT (Grid_Hight - 1)
 #define MAX_TAIL 10
 #define HEAD_SIZE 5
 
@@ -47,6 +48,8 @@ typedef struct
     dir_t moveDir;
 } Food_t;
 
+extern u8 Score;
+
 extern dir_t dir; // Initialize movement to the right
 extern SnakeHead_t head;
 extern SnakeTail_t tail;
@@ -60,5 +63,14 @@ void moveSnake(dir_t direction);
 void draw();
 
 void PoisionInTFT(u8 xpos, u8 ypos, u16 color);
+
+void MoveSnakeRight();
+void MoveSnakeLeft();
+void MoveSnakeDown();
+void MoveSnakeUp();
+
+
+
+void ControlEXT(u8 NVIC_NUMBER,void *callBackFun());
 
 #endif /* SNAKE_GAME_H_ */

@@ -139,8 +139,8 @@ void TFT_voidInit()
 	RCC_voidEnableClock(RCC_APB2,RCC_GPIOA);
 	RCC_voidEnableClock(RCC_APB2,RCC_SPI1);
 
-	GPIO_voidSetPinDirection(GPIOA,PIN1,OUTPUT_SPEED_2MHZ_PP);    /*TFT CMD_DATA*/
-	GPIO_voidSetPinDirection(GPIOA,PIN2,OUTPUT_SPEED_2MHZ_PP);    /*TFT RST*/
+	GPIO_voidSetPinDirection(TFT_CMD_DATA_PIN,OUTPUT_SPEED_2MHZ_PP);    /*TFT CMD_DATA*/
+	GPIO_voidSetPinDirection(TFT_RST_PIN,OUTPUT_SPEED_2MHZ_PP);    /*TFT RST*/
 	GPIO_voidSetPinDirection(GPIOA,PIN5,OUTPUT_SPEED_10MHZ_AFPP); /*TFT CLK*/
 	GPIO_voidSetPinDirection(GPIOA,PIN7,OUTPUT_SPEED_10MHZ_AFPP); /*TFT MOSI*/
 	SPI_Init();
@@ -480,6 +480,32 @@ void TFT_voidDrawString(u8 xpos, u8 ypos,u8 * PtrStr,u16 Color)
 	}
 }
 
+
+// Function to draw a number on the TFT
+void drawNumberOnTFT(u8 number, u8 x, u8 y, u16 color) {
+    // Ensure the number is between 0 and 9
+    if (number < 0 || number > 9) return;
+
+    // Offset for numbers in the letters array (starting from '0' which is ASCII 48)
+    int offset = 48;
+
+    // Get the font pattern for the number
+    char* pattern = letters[number + offset];
+
+    // Iterate over each row of the pattern
+    for (int row = 0; row < 8; row++) {
+        char rowData = pattern[row];
+
+        // Iterate over each bit of the row
+        for (int col = 0; col < 8; col++) {
+            // Check if the bit is set (1) to draw a pixel
+            if (rowData & (1 << (7 - col))) {
+                // Draw the pixel on the TFT
+                TFT_drawPixel(x + col, y + row, color);
+            }
+        }
+    }
+}
 
 /*****************************Private Functions***************************************/
 

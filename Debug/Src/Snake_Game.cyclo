@@ -1,0 +1,11 @@
+../Src/Snake_Game.c:22:6:initializeSnake	2
+../Src/Snake_Game.c:35:6:initializeFood	1
+../Src/Snake_Game.c:43:6:moveFood	9
+../Src/Snake_Game.c:75:6:moveSnake	12
+../Src/Snake_Game.c:131:6:draw	12
+../Src/Snake_Game.c:170:6:PoisionInTFT	1
+../Src/Snake_Game.c:180:6:MoveSnakeUp	1
+../Src/Snake_Game.c:185:6:MoveSnakeDown	1
+../Src/Snake_Game.c:190:6:MoveSnakeLeft	1
+../Src/Snake_Game.c:195:6:MoveSnakeRight	1
+../Src/Snake_Game.c:200:6:ControlEXT	1

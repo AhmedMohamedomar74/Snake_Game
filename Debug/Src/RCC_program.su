@@ -1,0 +1,4 @@
+../Src/RCC_program.c:10:6:RCC_voidInitSysClock	4	static
+../Src/RCC_program.c:50:6:RCC_voidEnableClock	16	static
+../Src/RCC_program.c:68:6:RCC_voidDisableClock	16	static
+../Src/RCC_program.c:87:4:RCC_u8GetClockSource	16	static

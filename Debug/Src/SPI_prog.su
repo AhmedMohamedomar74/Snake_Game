@@ -1,0 +1,3 @@
+../Src/SPI_prog.c:12:6:SPI_Init	8	static
+../Src/SPI_prog.c:37:6:SPI_Send	16	static
+../Src/SPI_prog.c:44:4:SPI_Receive	4	static

@@ -1,0 +1,5 @@
+../Src/EXTI_programm.c:12:6:EXTI_voidConfigure	24	static
+../Src/EXTI_programm.c:45:6:EXTI0_IRQHandler	16	static
+../Src/EXTI_programm.c:55:6:EXTI1_IRQHandler	8	static
+../Src/EXTI_programm.c:65:6:EXTI2_IRQHandler	8	static
+../Src/EXTI_programm.c:76:6:EXTI3_IRQHandler	8	static

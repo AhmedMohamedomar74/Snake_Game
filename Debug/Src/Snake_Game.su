@@ -1,0 +1,11 @@
+../Src/Snake_Game.c:22:6:initializeSnake	32	static
+../Src/Snake_Game.c:35:6:initializeFood	24	static
+../Src/Snake_Game.c:43:6:moveFood	4	static
+../Src/Snake_Game.c:75:6:moveSnake	40	static
+../Src/Snake_Game.c:131:6:draw	24	static
+../Src/Snake_Game.c:170:6:PoisionInTFT	40	static
+../Src/Snake_Game.c:180:6:MoveSnakeUp	4	static
+../Src/Snake_Game.c:185:6:MoveSnakeDown	4	static
+../Src/Snake_Game.c:190:6:MoveSnakeLeft	4	static
+../Src/Snake_Game.c:195:6:MoveSnakeRight	4	static
+../Src/Snake_Game.c:200:6:ControlEXT	16	static
