@@ -56,12 +56,12 @@ extern SnakeTail_t tail;
 extern Food_t food;
 
 void initializeSnake(int headX, int headY, int tailLength);
-void initializeFood(int foodX, int foodY, dir_t foodDirection);
+void initializeFood();
 void moveFood();
 void moveSnake(dir_t direction);
 // Draw game board with snake's head, tail, and food, and generate row array
 void draw();
-
+void CheckGamOver();
 void PoisionInTFT(u8 xpos, u8 ypos, u16 color);
 
 void MoveSnakeRight();
@@ -69,8 +69,6 @@ void MoveSnakeLeft();
 void MoveSnakeDown();
 void MoveSnakeUp();
 
-
-
-void ControlEXT(u8 NVIC_NUMBER,void *callBackFun());
+void ControlEXT(u8 NVIC_NUMBER, void *callBackFun());
 
 #endif /* SNAKE_GAME_H_ */

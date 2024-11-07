@@ -15,7 +15,7 @@
 #define SIZE_MEDIUM_16 16
 #define SIZE_LARGE_32  32
 
-#define Slected_Size SIZE_MEDIUM_16
+#define Slected_Size SIZE_LARGE_32
 
 #define Grid_Width (128 / Slected_Size)
 

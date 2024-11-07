@@ -16,6 +16,11 @@ SnakeHead_t head;
 SnakeTail_t tail;
 Food_t food;
 
+static u8 gameOver = 0;
+
+static u8 GPIO_u8ReadPins0to7();
+static Rand_val = 0;
+
 u8 GridFlags[(HEIGHT + 1)][(WIDTH + 1)] = {Empty};
 
 // Initialize snake position, tail length, and initial food position
@@ -32,43 +37,39 @@ void initializeSnake(int headX, int headY, int tailLength)
 }
 
 // Initialize food position and direction
-void initializeFood(int foodX, int foodY, dir_t foodDirection)
+void initializeFood()
 {
-    food.x = foodX;
-    food.y = foodY;
-    food.moveDir = foodDirection;
+    Rand_val = GPIO_u8ReadPins0to7();
+    food.x = Rand_val % WIDTH;
+    food.y = Rand_val % HEIGHT;
 }
 
 // Move food in a fixed direction when eaten
 void moveFood()
 {
-    switch (food.moveDir)
-    {
-    case RIGHT:
-        food.x++;
-        break;
-    case LEFT:
-        food.x--;
-        break;
-    case UP:
-        food.y--;
-        break;
-    case DOWN:
-        food.y++;
-        break;
-    default:
-        break;
-    }
-
+    Rand_val = GPIO_u8ReadPins0to7();
+    food.x = Rand_val % WIDTH;
+    food.y = Rand_val % HEIGHT;
     // Wrap food position around boundaries
     if (food.x >= WIDTH)
-        food.x = 0;
-    else if (food.x < 0)
+        food.x = 1;
+    else if (food.x < 1)
         food.x = WIDTH - 1;
     if (food.y >= HEIGHT)
-        food.y = 0;
-    else if (food.y < 0)
+        food.y = 1;
+    else if (food.y < 1)
         food.y = HEIGHT - 1;
+}
+
+void CheckGamOver()
+{
+    for (int i = 0; i <=tail.length; i++)
+    {
+        if (tail.x[i] == head.x && tail.y[i] == head.y)
+        {
+            gameOver = 1;
+        }
+    }
 }
 
 // Move snake in specified direction and update tail
@@ -123,47 +124,54 @@ void moveSnake(dir_t direction)
     {
         tail.length++;
         moveFood(); // Move food to new position
-        Score+= 10;
+        Score += 10;
     }
 }
 
 // Draw game board with snake's head, tail, and food, and generate row array
 void draw()
 {
-    for (int i = 1; i <= HEIGHT; i++)
+    if (gameOver == 0)
     {
-        for (int j = 1; j <= WIDTH; j++)
+        for (int i = 1; i <= HEIGHT; i++)
         {
-            if (i == head.y && j == head.x)
+            for (int j = 1; j <= WIDTH; j++)
             {
-                PoisionInTFT(head.x, head.y, TFT_BLUE); // Draw snake head
-                GridFlags[i][j] = FilledWithColor;
-            }
-            else if (i == food.y && j == food.x)
-            {
-                PoisionInTFT(food.x, food.y, TFT_GRAY);
-                GridFlags[i][j] = FilledWithColor;
-            }
-            else
-            {
-                int isTail = 0;
-                for (int k = 0; k < tail.length; k++)
+                if (i == head.y && j == head.x)
                 {
-                    if (i == tail.y[k] && j == tail.x[k])
-                    {
-                        PoisionInTFT(tail.x[k], tail.y[k], TFT_GREEN);
-                        isTail = 1;
-                        GridFlags[i][j] = FilledWithColor;
-                        break;
-                    }
+                    PoisionInTFT(head.x, head.y, TFT_BLUE); // Draw snake head
+                    GridFlags[i][j] = FilledWithColor;
                 }
-                if ((!isTail) && (GridFlags[i][j] == FilledWithColor))
+                else if (i == food.y && j == food.x)
                 {
-                    PoisionInTFT(j, i, TFT_WHITE);
-                    GridFlags[i][j] = Empty;
+                    PoisionInTFT(food.x, food.y, TFT_GRAY);
+                    GridFlags[i][j] = FilledWithColor;
+                }
+                else
+                {
+                    int isTail = 0;
+                    for (int k = 0; k < tail.length; k++)
+                    {
+                        if (i == tail.y[k] && j == tail.x[k])
+                        {
+                            PoisionInTFT(tail.x[k], tail.y[k], TFT_GREEN);
+                            isTail = 1;
+                            GridFlags[i][j] = FilledWithColor;
+                            break;
+                        }
+                    }
+                    if ((!isTail) && (GridFlags[i][j] == FilledWithColor))
+                    {
+                        PoisionInTFT(j, i, TFT_WHITE);
+                        GridFlags[i][j] = Empty;
+                    }
                 }
             }
         }
+    }
+    else
+    {
+        TFT_voidFillColor(TFT_RED);
     }
 }
 
@@ -176,31 +184,44 @@ void PoisionInTFT(u8 xpos, u8 ypos, u16 color)
     TFT_voidDrawRect(x1, x2, y1, y2, color);
 }
 
-
 void MoveSnakeUp()
 {
-	dir = UP;
+    dir = UP;
 }
 
 void MoveSnakeDown()
 {
-	dir = DOWN;
+    dir = DOWN;
 }
 
 void MoveSnakeLeft()
 {
-	dir = LEFT;
+    dir = LEFT;
 }
 
 void MoveSnakeRight()
 {
-	dir = RIGHT;
+    dir = RIGHT;
 }
 
-void ControlEXT(u8 NVIC_NUMBER,void *callBackFun())
+void ControlEXT(u8 NVIC_NUMBER, void *callBackFun())
 {
-	GPIO_voidSetPinDirection(GPIOA,(NVIC_NUMBER - 6),OUTPUT_SPEED_10MHZ_PP);
-	NVIC_EnableInterrupt(NVIC_NUMBER); //EXTI0
-	NVIC_SetPriority(NVIC_NUMBER,(NVIC_NUMBER - 6),0);
-	EXTI_voidConfigure((NVIC_NUMBER - 6),PORTA,EXTI_RISING_EDGE,callBackFun);
+    GPIO_voidSetPinDirection(GPIOA, (NVIC_NUMBER - 6), OUTPUT_SPEED_10MHZ_PP);
+    NVIC_EnableInterrupt(NVIC_NUMBER); // EXTI0
+    NVIC_SetPriority(NVIC_NUMBER, (NVIC_NUMBER - 6), 0);
+    EXTI_voidConfigure((NVIC_NUMBER - 6), PORTA, EXTI_RISING_EDGE, callBackFun);
+}
+
+static u8 GPIO_u8ReadPins0to7()
+{
+    u8 pinValues = 0;
+
+    // Read each pin from PIN0 to PIN7 and store in respective bit positions
+    for (u8 pin = 0; pin <= 7; pin++)
+    {
+        u8 pinValue = GPIO_u8GetPinValue(GPIOB, pin);
+        pinValues |= (pinValue << pin);
+    }
+
+    return pinValues;
 }

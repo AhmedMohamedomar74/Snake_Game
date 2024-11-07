@@ -481,30 +481,26 @@ void TFT_voidDrawString(u8 xpos, u8 ypos,u8 * PtrStr,u16 Color)
 }
 
 
-// Function to draw a number on the TFT
-void drawNumberOnTFT(u8 number, u8 x, u8 y, u16 color) {
-    // Ensure the number is between 0 and 9
-    if (number < 0 || number > 9) return;
-
-    // Offset for numbers in the letters array (starting from '0' which is ASCII 48)
-    int offset = 48;
-
-    // Get the font pattern for the number
-    char* pattern = letters[number + offset];
-
-    // Iterate over each row of the pattern
-    for (int row = 0; row < 8; row++) {
-        char rowData = pattern[row];
-
-        // Iterate over each bit of the row
-        for (int col = 0; col < 8; col++) {
-            // Check if the bit is set (1) to draw a pixel
-            if (rowData & (1 << (7 - col))) {
-                // Draw the pixel on the TFT
-                TFT_drawPixel(x + col, y + row, color);
-            }
-        }
+// Example function to draw a number by iterating through each digit
+void DrawNumber(int number, int startX, int startY, int color) {
+    char str[10];
+    snprintf(str, 10, "%d", number); // Convert number to string
+    int offset = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+    	TFT_voidDrawString(startX, startY, str[i], color);
+        offset += 8; // Move x position for the next character
     }
+}
+
+void TFT_voidDrawNumber (u16 Number,u8 xpos, u8 ypos,u16 Color)
+{
+	char buffer[10];  // Buffer to hold the string representation of var
+
+	// Convert integer to string
+	sprintf(buffer, "%d", Number);
+
+	// Now, pass buffer to TFT_voidDrawString
+	TFT_voidDrawString(xpos, ypos, buffer, Color);
 }
 
 /*****************************Private Functions***************************************/

@@ -26,7 +26,7 @@ void TFT_voidDrawSQ( u8 xpos, u8 ypos,u16 Color);
 void TFT_voidDrawLetter( u8 xpos, u8 ypos,const u8 *letter , u16 Color);
 void TFT_voidDrawString(u8 xpos, u8 ypos,u8 * PtrStr,u16 Color);
 void TFT_voidDrawSQSize( u8 xpos, u8 ypos,u16 req_size ,u16 Color);
-void drawNumberOnTFT(u8 number, u8 x, u8 y, u16 color);
+void TFT_voidDrawNumber (u16 Number,u8 xpos, u8 ypos,u16 Color);
 
 #define TFT_SLEEP_OUT_CMD   0x11
 #define TFT_COLOR_MODE_CMD  0x3A
