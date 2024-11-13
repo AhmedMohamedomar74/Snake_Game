@@ -13,8 +13,8 @@
 #include "EXTI_interface.h"
 
 // Define constants
-#define WIDTH Grid_Width
-#define HEIGHT (Grid_Hight - 1)
+#define WIDTH (Grid_Width + 1)
+#define HEIGHT ((Grid_Hight - 1) +1)
 #define MAX_TAIL 10
 #define HEAD_SIZE 5
 
@@ -54,6 +54,7 @@ extern dir_t dir; // Initialize movement to the right
 extern SnakeHead_t head;
 extern SnakeTail_t tail;
 extern Food_t food;
+extern u8 gameOver;
 
 void initializeSnake(int headX, int headY, int tailLength);
 void initializeFood();

@@ -16,7 +16,7 @@ SnakeHead_t head;
 SnakeTail_t tail;
 Food_t food;
 
-static u8 gameOver = 0;
+u8 gameOver = 0;
 
 static u8 GPIO_u8ReadPins0to7();
 static Rand_val = 0;
@@ -63,7 +63,7 @@ void moveFood()
 
 void CheckGamOver()
 {
-    for (int i = 0; i <=tail.length; i++)
+    for (int i = 1; i <=tail.length; i++)
     {
         if (tail.x[i] == head.x && tail.y[i] == head.y)
         {
@@ -99,7 +99,7 @@ void moveSnake(dir_t direction)
 
     // Update tail positions
     int prev2X, prev2Y;
-    for (int i = 0; i < tail.length; i++)
+    for (int i = 0; i <= tail.length; i++)
     {
         prev2X = tail.x[i];
         prev2Y = tail.y[i];
@@ -111,12 +111,12 @@ void moveSnake(dir_t direction)
 
     // Boundary wrapping for snake
     if (head.x >= WIDTH)
-        head.x = 0;
-    else if (head.x < 0)
+        head.x = 1;
+    else if (head.x < 1)
         head.x = WIDTH - 1;
     if (head.y >= HEIGHT)
-        head.y = 0;
-    else if (head.y < 0)
+        head.y = 1;
+    else if (head.y < 1)
         head.y = HEIGHT - 1;
 
     // Check if snake has eaten the food
@@ -139,12 +139,12 @@ void draw()
             {
                 if (i == head.y && j == head.x)
                 {
-                    PoisionInTFT(head.x, head.y, TFT_BLUE); // Draw snake head
+                    PoisionInTFT(head.x, head.y, SNAKE_HEAD_COLOR); // Draw snake head
                     GridFlags[i][j] = FilledWithColor;
                 }
                 else if (i == food.y && j == food.x)
                 {
-                    PoisionInTFT(food.x, food.y, TFT_GRAY);
+                    PoisionInTFT(food.x, food.y, FOOD_COLOR);
                     GridFlags[i][j] = FilledWithColor;
                 }
                 else
@@ -154,7 +154,7 @@ void draw()
                     {
                         if (i == tail.y[k] && j == tail.x[k])
                         {
-                            PoisionInTFT(tail.x[k], tail.y[k], TFT_GREEN);
+                            PoisionInTFT(tail.x[k], tail.y[k], SNAKE_BODY_COLOR);
                             isTail = 1;
                             GridFlags[i][j] = FilledWithColor;
                             break;
@@ -162,16 +162,20 @@ void draw()
                     }
                     if ((!isTail) && (GridFlags[i][j] == FilledWithColor))
                     {
-                        PoisionInTFT(j, i, TFT_WHITE);
+                        PoisionInTFT(j, i, BACKGROUND_COLOR);
                         GridFlags[i][j] = Empty;
                     }
                 }
             }
         }
+        TFT_voidDrawNumber(Score, 80, 150, SCORE_TEXT_COLOR);
     }
     else
     {
-        TFT_voidFillColor(TFT_RED);
+        TFT_voidFillColor(GAME_OVER_BACKGROUND_COLOR);
+        TFT_voidDrawString(20, 80, "Game Over!", GAME_OVER_TEXT_COLOR);
+        TFT_voidDrawString(30, 100, "Your Score  = ", GAME_OVER_TEXT_COLOR);
+        TFT_voidDrawNumber(Score, 80, 100, GAME_OVER_TEXT_COLOR);
     }
 }
 
@@ -186,22 +190,43 @@ void PoisionInTFT(u8 xpos, u8 ypos, u16 color)
 
 void MoveSnakeUp()
 {
-    dir = UP;
+    if (DOWN == dir) {
+		dir = DOWN;
+	}
+    else
+    {
+    	dir = UP;
+    }
 }
 
 void MoveSnakeDown()
 {
-    dir = DOWN;
+    if (UP == dir)
+    {
+    	dir =  UP;
+    }
+    else
+    {
+    	dir = DOWN;
+    }
 }
 
 void MoveSnakeLeft()
 {
-    dir = LEFT;
+    if (RIGHT == dir) {
+    	dir = RIGHT;
+	} else {
+		dir = LEFT;
+	}
 }
 
 void MoveSnakeRight()
 {
-    dir = RIGHT;
+    if (LEFT == dir) {
+    	dir = LEFT;
+	} else {
+		dir = RIGHT;
+	}
 }
 
 void ControlEXT(u8 NVIC_NUMBER, void *callBackFun())
